@@ -218,3 +218,15 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Python artifacts
+venv/
+__pycache__/
+*.pyc
+
+# Database files
+*.db
+*.sqlite3
+
+# Large datasets
+*.csv
