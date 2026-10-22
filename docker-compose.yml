@@ -1,0 +1,42 @@
+services:
+  data-service:
+    build:
+      context: ./data-service
+      dockerfile: Dockerfile
+    container_name: data-service
+    ports:
+      - "5000:5000"
+    networks:
+      - soa-network
+
+  processing-service:
+    build:
+      context: ./processing-service
+      dockerfile: Dockerfile
+    container_name: processing-service
+    ports:
+      - "5001:5001"
+    environment:
+      - DATA_SERVICE_URL=http://data-service:5000
+    depends_on:
+      - data-service
+    networks:
+      - soa-network
+
+  reporting-service:
+    build:
+      context: ./reporting-service
+      dockerfile: Dockerfile
+    container_name: reporting-service
+    ports:
+      - "8080:8080"
+    environment:
+      - PROCESSING_SERVICE_URL=http://processing-service:5001
+    depends_on:
+      - processing-service
+    networks:
+      - soa-network
+
+networks:
+  soa-network:
+    driver: bridge
